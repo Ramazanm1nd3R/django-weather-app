@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    <!-- Добавляем иконку страницы -->
+    <link rel="icon" type="image/x-icon" href="{% static 'weather_app/images/weather_icon.png' %}">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'weather_app/images/main_background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .container h1 {
+            text-align: center;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .container input {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .weather-info {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if error_message %}
+        <div class="error">{{ error_message }}</div>
+        {% endif %}
+
+        {% if weather_data %}
+        <div class="weather-info">
+            <h2>{{ weather_data.name }}</h2>
+            <p>{{ weather_data.weather.0.description }}</p>
+            <p>{{ weather_data.main.temp }}°C</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
